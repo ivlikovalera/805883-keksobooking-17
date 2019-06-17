@@ -1,4 +1,9 @@
 'use strict';
+var pin = {
+  width: 50,
+  height: 70
+};
+
 function getShuffleArray(values) {
   var currentIndex = values.length;
   var temporaryValue;
@@ -29,7 +34,7 @@ for (var i = 0; i <= 7; i++) {
   similarAds[i] =
     {
       'author': {
-        'avatar': 'img/avatars/user0'+ avatarNumbers[i] +'.png'
+        'avatar': 'img/avatars/user0' + avatarNumbers[i] + '.png'
       },
       'offer': {
         'type': types[i]
@@ -39,58 +44,24 @@ for (var i = 0; i <= 7; i++) {
         'y': getRandomInt(130, 630)
       }
     };
-};
-console.log(similarAds);
-
-/*
-var firstName = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var lastName = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var coatColor = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var eyesColor = ['black', 'red', 'blue', 'yellow', 'green'];
-var listCharacters = [];
-
-function getShuffleArray(values) {
-  var currentIndex = values.length;
-  var temporaryValue;
-  var randomIndex;
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = values[currentIndex];
-    values[currentIndex] = values[randomIndex];
-    values[randomIndex] = temporaryValue;
-  }
-  return values;
+}
+function createStyle(ad) {
+  return 'left: ' + (ad.x - pin.width / 2) + 'px; top: ' + (ad.y - pin.height) + 'px;';
 }
 
-firstName = getShuffleArray(firstName);
-lastName = getShuffleArray(lastName);
-coatColor = getShuffleArray(coatColor);
-eyesColor = getShuffleArray(eyesColor);
+var similarListAds = document.querySelector('.map__pins');
 
-for (var i = 0; i <= 3; i++) {
-  listCharacters[i] =
-    {
-      name: firstName[i] + ' ' + lastName[i],
-      coatColor: coatColor[i],
-      eyesColor: eyesColor[i]
-    };
-}
-document.querySelector('.setup-similar').classList.remove('hidden');
-
-var similarListElement = document.querySelector('.setup-similar-list');
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-function renderWizard(wizard) {
-  var wizardElement = similarWizardTemplate.cloneNode(true);
-  wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-  wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
-  return wizardElement;
+var similarAdTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+function renderAd(ad) {
+  var pinElement = similarAdTemplate.cloneNode(true);
+  pinElement.setAttribute('style', createStyle(ad.location));
+  pinElement.children[0].setAttribute('src', ad.author.avatar);
+  pinElement.setAttribute('alt', ad.offer.type);
+  return pinElement;
 }
 
 var fragment = document.createDocumentFragment();
-for (var j = 0; j < listCharacters.length; j++) {
-  fragment.appendChild(renderWizard(listCharacters[j]));
+for (var j = 0; j < similarAds.length; j++) {
+  fragment.appendChild(renderAd(similarAds[j]));
 }
-similarListElement.appendChild(fragment);
-*/
+similarListAds.appendChild(fragment);
