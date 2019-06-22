@@ -1,13 +1,13 @@
 'use strict';
 
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
 var PIN = {
   WIDTH: 50,
   HEIGHT: 70
 };
-
+var FILE_PATH = 'img/avatars/user0';
+var FILE_FORMAT = '.png';
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
@@ -25,7 +25,7 @@ var getShuffleArray = function (values) {
 var generatePins = function (count) {
   var avatarNumbers = [];
   for (var i = 0; i < count; i++) {
-    avatarNumbers[i] = 'img/avatars/user0' + (i + 1) + '.png';
+    avatarNumbers[i] = FILE_PATH + (i + 1) + FILE_FORMAT;
   }
   return avatarNumbers;
 };
