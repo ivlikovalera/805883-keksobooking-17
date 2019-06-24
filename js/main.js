@@ -13,7 +13,18 @@ var adFormInputs = adForm.querySelectorAll('input');
 var adFormSelects = adForm.querySelectorAll('select');
 var adFormFieldsets = adForm.querySelectorAll('fieldset');
 var filterForm = document.querySelector('.map__filters');
+var headlineInput = document.querySelector('#title');
+var perNightInput = document.querySelector('#price');
+var choiceOfHousingType = document.querySelector('#type');
 var addressInput = document.querySelector('#address');
+var housingTypes = {
+  bungalo: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
+};
+var arriveTime = document.querySelector('#timein');
+var departureTime = document.querySelector('#timeout');
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
@@ -95,3 +106,41 @@ var onPinClick = function () {
 };
 
 mainPin.addEventListener('click', onPinClick);
+
+headlineInput.min = 30;
+headlineInput.max = 100;
+headlineInput.required = true;
+
+perNightInput.max = 1000000;
+perNightInput.required = true;
+
+var changeMinPrice = function () {
+  if (choiceOfHousingType.value === 'bungalo') {
+    perNightInput.min = housingTypes.bungalo;
+    perNightInput.placeholder = housingTypes.bungalo;
+  }
+  if (choiceOfHousingType.value === 'flat') {
+    perNightInput.min = housingTypes.flat;
+    perNightInput.placeholder = housingTypes.flat;
+  }
+  if (choiceOfHousingType.value === 'house') {
+    perNightInput.min = housingTypes.house;
+    perNightInput.placeholder = housingTypes.house;
+  }
+  if (choiceOfHousingType.value === 'palace') {
+    perNightInput.min = housingTypes.palace;
+    perNightInput.placeholder = housingTypes.palace;
+  }
+};
+
+choiceOfHousingType.addEventListener('change', changeMinPrice);
+changeMinPrice();
+addressInput.readOnly = true;
+
+arriveTime.addEventListener('change', function () {
+  departureTime.selectedIndex = arriveTime.selectedIndex;
+});
+
+departureTime.addEventListener('change', function () {
+  arriveTime.selectedIndex = departureTime.selectedIndex;
+});
