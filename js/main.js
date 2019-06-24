@@ -4,7 +4,7 @@ var PIN = {
   WIDTH: 50,
   HEIGHT: 70
 };
-var MAIN_PIN = document.querySelector('.map__pin--main');
+var mainPin = document.querySelector('.map__pin--main');
 var FILE_PATH = 'img/avatars/user0';
 var FILE_FORMAT = '.png';
 var map = document.querySelector('.map');
@@ -17,7 +17,7 @@ var addressInput = document.querySelector('#address');
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
-addressInput.value = MAIN_PIN.offsetLeft + ', ' + MAIN_PIN.offsetTop;
+addressInput.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
 var getShuffleArray = function (values) {
   for (var i = values.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -79,9 +79,9 @@ var makeFiledFragment = function (pins) {
 
 var fragment = makeFiledFragment(getPins(8));
 var getFormElements = function (formElements) {
-  for (var i = 0; i < formElements.length; i++) {
-    formElements[i].removeAttribute('disabled');
-  }
+  formElements.forEach(function (element) {
+    element.disabled = false;
+  });
 };
 
 var onPinClick = function () {
@@ -91,9 +91,7 @@ var onPinClick = function () {
   getFormElements(adFormInputs);
   getFormElements(adFormSelects);
   getFormElements(adFormFieldsets);
-  filterForm.classList.remove('map__filters');
+  filterForm.classList.remove('map__filters-container');
 };
 
-MAIN_PIN.addEventListener('click', function () {
-  onPinClick();
-});
+mainPin.addEventListener('click', onPinClick);
