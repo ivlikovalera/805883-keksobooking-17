@@ -159,7 +159,7 @@ mainPin.addEventListener('mousedown', function (evt) {
     if (startCoords.y < APPLICATION_HEIGHT.START) {
       mainPin.style.top = APPLICATION_HEIGHT.START + 'px';
     }
-    if (startCoords.y > APPLICATION_HEIGHT.MAX) {
+    if (startCoords.y > APPLICATION_HEIGHT.MAX - PIN.HEIGHT) {
       mainPin.style.top = APPLICATION_HEIGHT.MAX + 'px';
     }
   };
