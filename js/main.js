@@ -5,11 +5,11 @@ var PIN = {
   HEIGHT: 84
 };
 var APPLICATION_WIDTH = {
-  START: 1,
+  MIN: 1,
   MAX: 1200
 };
 var APPLICATION_HEIGHT = {
-  START: 130,
+  MIN: 130,
   MAX: 630
 };
 var FILE_PATH = 'img/avatars/user0';
@@ -33,8 +33,8 @@ var AppartmentType = {
 var mainPin = document.querySelector('.map__pin--main');
 var map = document.querySelector('.map');
 var form = document.querySelector('.ad-form');
-var adFormFields = form.querySelectorAll('input');
-var adFormSelects = form.querySelectorAll('select');
+var formFields = document.querySelectorAll('input');
+var formSelects = document.querySelectorAll('select');
 var adFormFieldsets = form.querySelectorAll('fieldset');
 var headlineField = form.querySelector('#title');
 var perNightField = form.querySelector('#price');
@@ -107,20 +107,22 @@ var makeFiledFragment = function (pins) {
 };
 
 var fragment = makeFiledFragment(getPins(8));
-var getFormElements = function (formElements, state) {
+var getFormElements = function (formElements, state, pointer) {
   formElements.forEach(function (element) {
     element.disabled = state;
+    element.style = pointer;
   });
 };
-getFormElements(adFormFieldsets, true);
+getFormElements(formFields, true, 'pointer-events: none');
+getFormElements(formSelects, true, 'pointer-events: none');
+getFormElements(adFormFieldsets, true, 'pointer-events: none');
 var onPinClick = function () {
   similarListAds.appendChild(fragment);
   map.classList.remove('map--faded');
   form.classList.remove('ad-form--disabled');
-  getFormElements(adFormFields, false);
-  getFormElements(adFormSelects, false);
-  getFormElements(adFormFieldsets, false);
-  form.classList.remove('map__filters');
+  getFormElements(formFields, false, false);
+  getFormElements(formSelects, false, false);
+  getFormElements(adFormFieldsets, false, false);
   activatePin = true;
 };
 
@@ -128,6 +130,11 @@ mainPin.addEventListener('click', onPinClick);
 mainPin.addEventListener('mousedown', function (evt) {
 
   evt.preventDefault();
+
+  if (map.classList.contains('map--faded')) {
+    onPinClick();
+    mainPin.removeEventListener('click', onPinClick);
+  }
 
   var startCoords = {
     x: evt.clientX,
@@ -146,22 +153,16 @@ mainPin.addEventListener('mousedown', function (evt) {
       x: moveEvt.clientX,
       y: moveEvt.clientY
     };
+    var currentCoordY = mainPin.offsetTop - shift.y;
+    var currentCoordX = mainPin.offsetLeft - shift.x;
 
-    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+    if ((currentCoordY >= APPLICATION_HEIGHT.MIN) && (currentCoordY <= APPLICATION_HEIGHT.MAX)) {
+      mainPin.style.top = currentCoordY + 'px';
+    }
+    if ((currentCoordX >= APPLICATION_WIDTH.MIN) && (currentCoordX <= APPLICATION_WIDTH.MAX - PIN.WIDTH)) {
+      mainPin.style.left = currentCoordX + 'px';
+    }
     addressField.value = mainPin.offsetLeft + PIN.WIDTH / 2 + ', ' + mainPin.offsetTop;
-    if (startCoords.x < (APPLICATION_WIDTH.START + PIN.WIDTH / 2)) {
-      mainPin.style.left = APPLICATION_WIDTH.START + 'px';
-    }
-    if (startCoords.x > (APPLICATION_WIDTH.MAX - PIN.WIDTH)) {
-      mainPin.style.left = (APPLICATION_WIDTH.MAX - PIN.WIDTH) + 'px';
-    }
-    if (startCoords.y < APPLICATION_HEIGHT.START) {
-      mainPin.style.top = APPLICATION_HEIGHT.START + 'px';
-    }
-    if (startCoords.y > APPLICATION_HEIGHT.MAX - PIN.HEIGHT) {
-      mainPin.style.top = APPLICATION_HEIGHT.MAX + 'px';
-    }
   };
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
@@ -171,12 +172,7 @@ mainPin.addEventListener('mousedown', function (evt) {
   };
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
-  if (activatePin === false) {
-    onPinClick();
-  }
-  if (activatePin === true) {
-    mainPin.removeEventListener('click', onPinClick);
-  }
+
 });
 
 headlineField.minLength = TITLE_MIN_LENGTH;
