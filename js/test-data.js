@@ -3,6 +3,7 @@
 (function () {
   var FILE_PATH = 'img/avatars/user0';
   var FILE_FORMAT = '.png';
+  var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 
   var generatePins = function (count) {
     var avatarNumbers = [];
@@ -14,7 +15,6 @@
 
   var avatarNumbers = window.utils.getShuffleArray(generatePins(8));
 
-  var TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var getPins = function (count) {
     var similarAds = [];
     for (var i = 0; i < count; i++) {
@@ -53,7 +53,7 @@
     return fragment;
   };
 
-  window.pin = {
+  window.testData = {
     similarListAds: document.querySelector('.map__pins'),
     fragment: makeFiledFragment(getPins(8))
   };
