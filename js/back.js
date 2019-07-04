@@ -49,7 +49,7 @@
     xhr.open('POST', URL_SEND);
     xhr.send(data);
     var onSuccess = function () {
-      console.log('Данные отправлены, ю-ху!');
+      // console.log('Данные отправлены, ю-ху!');
     };
     xhr.addEventListener('load', function () {
       onLoad(xhr, onSuccess);
