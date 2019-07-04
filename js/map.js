@@ -22,12 +22,11 @@
   addressField.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
 
   var onPinClick = function () {
-    window.testData.similarListAds.appendChild(window.testData.fragment);
     map.classList.remove('map--faded');
     window.form.form.classList.remove('ad-form--disabled');
     window.form.setDeactivatedForm(false);
+    window.back.loadPins();
   };
-
   mainPin.addEventListener('click', onPinClick);
   mainPin.addEventListener('mousedown', window.movePin.draggedPin);
   window.map = {

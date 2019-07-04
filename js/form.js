@@ -87,6 +87,11 @@
     changeTimeFieldValue(departureTimeField, arriveTimeField);
   });
 
+  document.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.back.sendForm(new FormData(form));
+  });
+
   window.form = {
     form: form,
     setDeactivatedForm: setDeactivatedForm
