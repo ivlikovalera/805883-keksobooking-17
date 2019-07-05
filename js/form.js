@@ -17,31 +17,32 @@
     HOUSE: 'house',
     PALACE: 'palace'
   };
-
-  window.form = {
-    form: document.querySelector('.ad-form'),
-    formFields: document.querySelectorAll('input'),
-    formSelects: document.querySelectorAll('select'),
-    adFormFieldsets: document.querySelectorAll('fieldset'),
-
-    getFormElements: function (formElements, state, pointer) {
-      formElements.forEach(function (element) {
-        element.disabled = state;
-        element.style = pointer;
-      });
+  var form = document.querySelector('.ad-form');
+  var formFields = document.querySelectorAll('input');
+  var formSelects = document.querySelectorAll('select');
+  var adFormFieldsets = document.querySelectorAll('fieldset');
+  var headlineField = form.querySelector('#title');
+  var perNightField = form.querySelector('#price');
+  var choiceOfHousingType = form.querySelector('#type');
+  var arriveTimeField = form.querySelector('#timein');
+  var departureTimeField = form.querySelector('#timeout');
+  var changeFormElements = function (formElements, state, pointer) {
+    formElements.forEach(function (element) {
+      element.disabled = state;
+      element.style = pointer;
+    });
+  };
+  var setDeactivatedForm = function (state) {
+    var pointer = false;
+    if (state === true) {
+      pointer = 'pointer-events: none';
     }
+    changeFormElements(formFields, state, pointer);
+    changeFormElements(formSelects, state, pointer);
+    changeFormElements(adFormFieldsets, state, pointer);
   };
 
-  var headlineField = window.form.form.querySelector('#title');
-  var perNightField = window.form.form.querySelector('#price');
-  var choiceOfHousingType = window.form.form.querySelector('#type');
-  var arriveTimeField = window.form.form.querySelector('#timein');
-  var departureTimeField = window.form.form.querySelector('#timeout');
-
-  window.form.getFormElements(window.form.formFields, true, 'pointer-events: none');
-  window.form.getFormElements(window.form.formSelects, true, 'pointer-events: none');
-  window.form.getFormElements(window.form.adFormFieldsets, true, 'pointer-events: none');
-
+  setDeactivatedForm(true);
   headlineField.minLength = TITLE_MIN_LENGTH;
   headlineField.maxLength = TITLE_MAX_LENGTH;
   headlineField.required = true;
@@ -85,4 +86,14 @@
   departureTimeField.addEventListener('change', function () {
     changeTimeFieldValue(departureTimeField, arriveTimeField);
   });
+
+  document.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.back.sendForm(new FormData(form));
+  });
+
+  window.form = {
+    form: form,
+    setDeactivatedForm: setDeactivatedForm
+  };
 })();
