@@ -1,61 +1,74 @@
 'use strict';
 
 (function () {
-  var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
-  var URL_SEND = 'https://js.dump.academy/keksobooking';
+  var Url = {
+    LOAD: 'https://js.dump.academy/keksobooking/data',
+    SEND: 'https://js.dump.academy/keksobooking'
+  };
   var Code = {
     SUCCESS: 200,
     BAD_REQUEST: 400,
     NOT_FOUND_ERROR: 404,
     BAD_GATEWAY: 502
   };
-
+  var DescriptionText = {
+    BAD_REQUEST: 'Некорректный запрос',
+    NOT_FOUND_ERROR: 'Ничего не найдено',
+    BAD_GATEWAY: 'Проблемы на стороне сервера',
+    ANOTHER_ERROR: 'Сервер ответил кодом '
+  };
+  var Request = {
+    GET: 'GET',
+    POST: 'POST'
+  };
   var onLoad = function (xhr, onSuccess) {
     switch (xhr.status) {
       case Code.SUCCESS:
         onSuccess();
         break;
       case Code.BAD_REQUEST:
-        window.showErrorModal('Некорректный запрос');
+        window.showErrorModal(DescriptionText.BAD_REQUEST);
         break;
       case Code.NOT_FOUND_ERROR:
-        window.showErrorModal('Ничего не найдено');
+        window.showErrorModal(DescriptionText.NOT_FOUND_ERROR);
         break;
       case Code.BAD_GATEWAY:
-        window.showErrorModal('Проблемы на стороне сервера');
+        window.showErrorModal(DescriptionText.BAD_GATEWAY);
         break;
       default:
-        window.showErrorModal(null);
+        window.showErrorModal((DescriptionText.ANOTHER_ERROR + xhr.status));
     }
+  };
+  var createXHR = function (methodRequest, urlRequest, onSuccess) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(methodRequest, urlRequest);
+    xhr.addEventListener('load', function () {
+      onLoad(xhr, onSuccess);
+    });
+    xhr.addEventListener('error', window.showErrorModal);
+    return xhr;
   };
 
   var loadPins = function () {
-    var xhr = new XMLHttpRequest();
     var onSuccess = function () {
-      var fragment = window.renderPins.makeFiledFragment(xhr.response);
+      window.renderPins.allPins = xhr.response;
+      var fragment = window.renderPins.makeFiledFragment(window.renderPins.allPins);
       window.renderPins.similarListAds.appendChild(fragment);
+      window.renderPins.currentPins = window.renderPins.similarListAds.querySelectorAll('.map__pin');
     };
+    var xhr = createXHR(Request.GET, Url.LOAD, onSuccess);
     xhr.responseType = 'json';
-    xhr.open('GET', URL_LOAD);
     xhr.send();
-    xhr.addEventListener('load', function () {
-      onLoad(xhr, onSuccess);
-    });
-    xhr.addEventListener('error', window.showErrorModal);
   };
 
   var sendForm = function (data) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', URL_SEND);
-    xhr.send(data);
     var onSuccess = function () {
-      // console.log('Данные отправлены, ю-ху!');
+
     };
-    xhr.addEventListener('load', function () {
-      onLoad(xhr, onSuccess);
-    });
-    xhr.addEventListener('error', window.showErrorModal);
+    var xhr = createXHR(Request.POST, Url.SEND, onSuccess);
+    xhr.send(data);
   };
+
   window.back = {
     loadPins: loadPins,
     sendForm: sendForm
