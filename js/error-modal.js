@@ -9,9 +9,7 @@
   var errorModal = errorTemplate;
 
   var showErrorModal = function (errorText) {
-    if (errorText !== null) {
-      errorMessage.textContent = errorText;
-    }
+    errorMessage.textContent = errorText;
     applicationLayout.appendChild(errorTemplate);
   };
   errorButton.addEventListener('click', function () {

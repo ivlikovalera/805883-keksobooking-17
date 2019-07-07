@@ -8,34 +8,32 @@
       window.map.onPinClick();
       window.map.mainPin.removeEventListener('click', window.map.onPinClick);
     }
-
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
+    var Coordinate = function (x, y) {
+      this.x = x;
+      this.y = y;
     };
+    var startCoords = new Coordinate(evt.clientX, evt.clientY);
+
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
+      var shift = new Coordinate(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
+      startCoords.x = moveEvt.clientX;
+      startCoords.y = moveEvt.clientY;
       var currentCoordY = window.map.mainPin.offsetTop - shift.y;
       var currentCoordX = window.map.mainPin.offsetLeft - shift.x;
 
-      if ((currentCoordY >= window.map.APPLICATION_HEIGHT.MIN) && (currentCoordY <= window.map.APPLICATION_HEIGHT.MAX)) {
+      if ((currentCoordY >= window.map.APPLICATION_HEIGHT.MIN) &&
+      (currentCoordY <= window.map.APPLICATION_HEIGHT.MAX)) {
         window.map.mainPin.style.top = currentCoordY + 'px';
       }
-      if ((currentCoordX >= window.map.APPLICATION_WIDTH.MIN) && (currentCoordX <= window.map.APPLICATION_WIDTH.MAX - window.map.PIN.WIDTH)) {
+      if ((currentCoordX >= window.map.APPLICATION_WIDTH.MIN) &&
+      (currentCoordX <= window.map.APPLICATION_WIDTH.MAX - window.map.PIN.WIDTH)) {
         window.map.mainPin.style.left = currentCoordX + 'px';
       }
-      window.map.addressField.value = window.map.mainPin.offsetLeft + window.map.PIN.WIDTH / 2 + ', ' + window.map.mainPin.offsetTop;
+      window.map.addressField.value =
+      window.map.mainPin.offsetLeft + window.map.PIN.WIDTH / 2 + ', ' + window.map.mainPin.offsetTop;
     };
+
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
