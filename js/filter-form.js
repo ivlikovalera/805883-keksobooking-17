@@ -4,11 +4,12 @@
   var any = 'any';
   var adFilter = window.mapContainer.map.querySelector('.map__filters');
   var adFilterSelects = adFilter.querySelector('#housing-type');
-  var resultFilterType = window.renderPins.getAllPins();
+  var resultFilterType;
   var changeRenderPins = function (type) {
     var currentPins = window.renderPins.similarListAds.querySelectorAll('.map__pin');
+    resultFilterType = window.renderPins.getAllPins();
     currentPins.forEach(function (element) {
-      if (!(element.classList.contains('map__pin--main'))) {
+      if (!element.classList.contains('map__pin--main')) {
         window.renderPins.similarListAds.removeChild(element);
       }
     });

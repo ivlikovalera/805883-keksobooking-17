@@ -14,22 +14,24 @@
   };
 
   var makeFiledFragment = function (pins) {
-    pins = pins.slice(0, MAX_PIN_COUNT);
+    var activePins = pins.slice(0, MAX_PIN_COUNT);
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < pins.length; j++) {
-      fragment.appendChild(renderAd(pins[j]));
-    }
+    activePins.forEach(function (it) {
+      fragment.appendChild(renderAd(it));
+    });
     return fragment;
   };
   var getAllPins = function () {
     return allPins;
   };
-  var setAllPins = function (response) {
-    allPins = response;
-  };
+
   var renderPinsToMap = function (currentPins) {
     var fragment = makeFiledFragment(currentPins);
     similarListAds.appendChild(fragment);
+  };
+  var setRenderAllPins = function (response) {
+    allPins = response;
+    renderPinsToMap(allPins);
   };
 
   window.renderPins = {
@@ -37,6 +39,6 @@
     makeFiledFragment: makeFiledFragment,
     renderPinsToMap: renderPinsToMap,
     getAllPins: getAllPins,
-    setAllPins: setAllPins,
+    setRenderAllPins: setRenderAllPins,
   };
 })();
