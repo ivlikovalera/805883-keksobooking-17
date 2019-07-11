@@ -29,7 +29,7 @@
   };
   mainPin.addEventListener('click', onPinClick);
   mainPin.addEventListener('mousedown', window.movePin.draggedPin);
-  window.map = {
+  window.mapContainer = {
     PIN: PIN,
     APPLICATION_WIDTH: APPLICATION_WIDTH,
     APPLICATION_HEIGHT: APPLICATION_HEIGHT,
