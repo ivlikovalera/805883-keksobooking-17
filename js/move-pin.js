@@ -4,9 +4,9 @@
   var draggedPin = function (evt) {
 
     evt.preventDefault();
-    if (window.map.map.classList.contains('map--faded')) {
-      window.map.onPinClick();
-      window.map.mainPin.removeEventListener('click', window.map.onPinClick);
+    if (window.mapContainer.map.classList.contains('map--faded')) {
+      window.mapContainer.onPinClick();
+      window.mapContainer.mainPin.removeEventListener('click', window.mapContainer.onPinClick);
     }
     var Coordinate = function (x, y) {
       this.x = x;
@@ -19,19 +19,19 @@
       var shift = new Coordinate(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
       startCoords.x = moveEvt.clientX;
       startCoords.y = moveEvt.clientY;
-      var currentCoordY = window.map.mainPin.offsetTop - shift.y;
-      var currentCoordX = window.map.mainPin.offsetLeft - shift.x;
+      var currentCoordY = window.mapContainer.mainPin.offsetTop - shift.y;
+      var currentCoordX = window.mapContainer.mainPin.offsetLeft - shift.x;
 
-      if ((currentCoordY >= window.map.APPLICATION_HEIGHT.MIN) &&
-      (currentCoordY <= window.map.APPLICATION_HEIGHT.MAX)) {
-        window.map.mainPin.style.top = currentCoordY + 'px';
+      if ((currentCoordY >= window.mapContainer.APPLICATION_HEIGHT.MIN) &&
+      (currentCoordY <= window.mapContainer.APPLICATION_HEIGHT.MAX)) {
+        window.mapContainer.mainPin.style.top = currentCoordY + 'px';
       }
-      if ((currentCoordX >= window.map.APPLICATION_WIDTH.MIN) &&
-      (currentCoordX <= window.map.APPLICATION_WIDTH.MAX - window.map.PIN.WIDTH)) {
-        window.map.mainPin.style.left = currentCoordX + 'px';
+      if ((currentCoordX >= window.mapContainer.APPLICATION_WIDTH.MIN) &&
+      (currentCoordX <= window.mapContainer.APPLICATION_WIDTH.MAX - window.mapContainer.PIN.WIDTH)) {
+        window.mapContainer.mainPin.style.left = currentCoordX + 'px';
       }
-      window.map.addressField.value =
-      window.map.mainPin.offsetLeft + window.map.PIN.WIDTH / 2 + ', ' + window.map.mainPin.offsetTop;
+      window.mapContainer.addressField.value =
+      window.mapContainer.mainPin.offsetLeft + window.mapContainer.PIN.WIDTH / 2 + ', ' + window.mapContainer.mainPin.offsetTop;
     };
 
     var onMouseUp = function (upEvt) {

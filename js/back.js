@@ -17,55 +17,43 @@
     BAD_GATEWAY: 'Проблемы на стороне сервера',
     ANOTHER_ERROR: 'Сервер ответил кодом '
   };
-  var Request = {
+  var HTTPMethod = {
     GET: 'GET',
     POST: 'POST'
-  };
-  var onLoad = function (xhr, onSuccess) {
-    switch (xhr.status) {
-      case Code.SUCCESS:
-        onSuccess();
-        break;
-      case Code.BAD_REQUEST:
-        window.showErrorModal(DescriptionText.BAD_REQUEST);
-        break;
-      case Code.NOT_FOUND_ERROR:
-        window.showErrorModal(DescriptionText.NOT_FOUND_ERROR);
-        break;
-      case Code.BAD_GATEWAY:
-        window.showErrorModal(DescriptionText.BAD_GATEWAY);
-        break;
-      default:
-        window.showErrorModal((DescriptionText.ANOTHER_ERROR + xhr.status));
-    }
   };
   var createXHR = function (methodRequest, urlRequest, onSuccess) {
     var xhr = new XMLHttpRequest();
     xhr.open(methodRequest, urlRequest);
-    xhr.addEventListener('load', function () {
-      onLoad(xhr, onSuccess);
+    xhr.addEventListener('load', function (evt) {
+      switch (evt.target.status) {
+        case Code.SUCCESS:
+          onSuccess(evt.target.response);
+          break;
+        case Code.BAD_REQUEST:
+          window.showErrorModal(DescriptionText.BAD_REQUEST);
+          break;
+        case Code.NOT_FOUND_ERROR:
+          window.showErrorModal(DescriptionText.NOT_FOUND_ERROR);
+          break;
+        case Code.BAD_GATEWAY:
+          window.showErrorModal(DescriptionText.BAD_GATEWAY);
+          break;
+        default:
+          window.showErrorModal((DescriptionText.ANOTHER_ERROR + evt.target.status));
+      }
     });
     xhr.addEventListener('error', window.showErrorModal);
     return xhr;
   };
 
-  var loadPins = function () {
-    var onSuccess = function () {
-      window.renderPins.allPins = xhr.response;
-      var fragment = window.renderPins.makeFiledFragment(window.renderPins.allPins);
-      window.renderPins.similarListAds.appendChild(fragment);
-      window.renderPins.currentPins = window.renderPins.similarListAds.querySelectorAll('.map__pin');
-    };
-    var xhr = createXHR(Request.GET, Url.LOAD, onSuccess);
+  var loadPins = function (onSuccess) {
+    var xhr = createXHR(HTTPMethod.GET, Url.LOAD, onSuccess);
     xhr.responseType = 'json';
     xhr.send();
   };
 
-  var sendForm = function (data) {
-    var onSuccess = function () {
-
-    };
-    var xhr = createXHR(Request.POST, Url.SEND, onSuccess);
+  var sendForm = function (data, onSuccess) {
+    var xhr = createXHR(HTTPMethod.POST, Url.SEND, onSuccess);
     xhr.send(data);
   };
 
