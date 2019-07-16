@@ -15,7 +15,7 @@
     BUNGALO: 'bungalo',
     FLAT: 'flat',
     HOUSE: 'house',
-    PALACE: 'palace'
+    PALACE: 'palace',
   };
   var form = document.querySelector('.ad-form');
   var formFields = document.querySelectorAll('input');
@@ -94,6 +94,7 @@
 
   window.form = {
     form: form,
-    setDeactivatedForm: setDeactivatedForm
+    setDeactivatedForm: setDeactivatedForm,
+    AppartmentType: AppartmentType,
   };
 })();
