@@ -46,7 +46,7 @@
     return xhr;
   };
 
-  var loadPins = function (onSuccess) {
+  var loadAds = function (onSuccess) {
     var xhr = createXHR(HTTPMethod.GET, Url.LOAD, onSuccess);
     xhr.responseType = 'json';
     xhr.send();
@@ -58,7 +58,7 @@
   };
 
   window.back = {
-    loadPins: loadPins,
+    loadAds: loadAds,
     sendForm: sendForm
   };
 })();

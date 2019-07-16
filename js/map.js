@@ -25,10 +25,12 @@
     map.classList.remove('map--faded');
     window.form.form.classList.remove('ad-form--disabled');
     window.form.setDeactivatedForm(false);
-    window.back.loadPins(window.renderPins.setRenderAllPins);
+    window.back.loadAds(window.renderPins.setRenderAllPins);
   };
+
   mainPin.addEventListener('click', onPinClick);
   mainPin.addEventListener('mousedown', window.movePin.draggedPin);
+
   window.mapContainer = {
     PIN: PIN,
     APPLICATION_WIDTH: APPLICATION_WIDTH,

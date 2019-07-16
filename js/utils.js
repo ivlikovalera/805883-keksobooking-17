@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var ESC = 27;
+
   var getRandomInt = function (min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   };
@@ -17,6 +19,7 @@
 
   window.utils = {
     getRandomInt: getRandomInt,
-    getShuffleArray: getShuffleArray
+    getShuffleArray: getShuffleArray,
+    ESC: ESC,
   };
 })();

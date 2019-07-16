@@ -28,6 +28,7 @@
   var renderPinsToMap = function (currentPins) {
     var fragment = makeFiledFragment(currentPins);
     similarListAds.appendChild(fragment);
+    window.renderCards.setListenerToPin(currentPins);
   };
   var setRenderAllPins = function (response) {
     allPins = response;
@@ -36,7 +37,6 @@
 
   window.renderPins = {
     similarListAds: similarListAds,
-    makeFiledFragment: makeFiledFragment,
     renderPinsToMap: renderPinsToMap,
     getAllPins: getAllPins,
     setRenderAllPins: setRenderAllPins,

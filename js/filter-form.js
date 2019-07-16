@@ -33,36 +33,16 @@
     window.stopBounce(window.renderPins.renderPinsToMap(filterPins()));
   };
 
-  adFilterTypeSelect.addEventListener('change', function () {
-    changeRenderPins(adFilterTypeSelect.value);
-  });
-  adFilterPriceSelect.addEventListener('change', function () {
-    changeRenderPins();
-  });
-  adFilterRoomsSelect.addEventListener('change', function () {
-    changeRenderPins();
-  });
-  adFilterGuestsSelect.addEventListener('change', function () {
-    changeRenderPins();
-  });
-  adFilterWifiCheckbox.addEventListener('click', function () {
-    changeRenderPins();
-  });
-  adFilterDishwasherCheckbox.addEventListener('click', function () {
-    changeRenderPins();
-  });
-  adFilterParkingCheckbox.addEventListener('click', function () {
-    changeRenderPins();
-  });
-  adFilterWasherCheckbox.addEventListener('click', function () {
-    changeRenderPins();
-  });
-  adFilterElevatorCheckbox.addEventListener('click', function () {
-    changeRenderPins();
-  });
-  adFilterConditionerCheckbox.addEventListener('click', function () {
-    changeRenderPins();
-  });
+  adFilterTypeSelect.addEventListener('change', changeRenderPins);
+  adFilterPriceSelect.addEventListener('change', changeRenderPins);
+  adFilterRoomsSelect.addEventListener('change', changeRenderPins);
+  adFilterGuestsSelect.addEventListener('change', changeRenderPins);
+  adFilterWifiCheckbox.addEventListener('click', changeRenderPins);
+  adFilterDishwasherCheckbox.addEventListener('click', changeRenderPins);
+  adFilterParkingCheckbox.addEventListener('click', changeRenderPins);
+  adFilterWasherCheckbox.addEventListener('click', changeRenderPins);
+  adFilterElevatorCheckbox.addEventListener('click', changeRenderPins);
+  adFilterConditionerCheckbox.addEventListener('click', changeRenderPins);
 
   var filterPins = function () {
     return resultFilterPins.filter(function (pinObject) {
@@ -98,5 +78,8 @@
       }
       return true;
     });
+  };
+  window.filterForm = {
+    Features: Features,
   };
 })();

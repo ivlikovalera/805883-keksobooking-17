@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC = 27;
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var applicationLayout = document.querySelector('main');
   var errorMessage = errorTemplate.querySelector('.error__message');
@@ -11,14 +10,14 @@
   var showErrorModal = function (errorText) {
     errorMessage.textContent = errorText;
     applicationLayout.appendChild(errorTemplate);
-  };
-  errorButton.addEventListener('click', function () {
-    applicationLayout.removeChild(errorModal);
-  });
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ESC) {
+    errorButton.addEventListener('click', function () {
       applicationLayout.removeChild(errorModal);
-    }
-  });
+    });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.utils.ESC) {
+        applicationLayout.removeChild(errorModal);
+      }
+    });
+  };
   window.showErrorModal = showErrorModal;
 })();
