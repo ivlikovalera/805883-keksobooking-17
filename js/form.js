@@ -4,28 +4,28 @@
   var TITLE_MIN_LENGTH = 30;
   var TITLE_MAX_LENGTH = 100;
   var MAX_PRICE_PER_NIGHT = 1000000;
-
-  var houseTypeByPrice = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
-  };
   var AppartmentType = {
     BUNGALO: 'bungalo',
     FLAT: 'flat',
     HOUSE: 'house',
     PALACE: 'palace',
   };
-  var form = document.querySelector('.ad-form');
-  var formFields = document.querySelectorAll('input');
-  var formSelects = document.querySelectorAll('select');
-  var adFormFieldsets = document.querySelectorAll('fieldset');
-  var headlineField = form.querySelector('#title');
-  var perNightField = form.querySelector('#price');
-  var choiceOfHousingType = form.querySelector('#type');
-  var arriveTimeField = form.querySelector('#timein');
-  var departureTimeField = form.querySelector('#timeout');
+  var houseTypeByPrice = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
+  var adForm = document.querySelector('.ad-form');
+  var mapForm = document.querySelector('.map__filters');
+  var adFormFieldsets = adForm.querySelectorAll('fieldset');
+  var mapFormFieldsets = mapForm.querySelectorAll('fieldset');
+  var headlineField = adForm.querySelector('#title');
+  var perNightField = adForm.querySelector('#price');
+  var choiceOfHousingType = adForm.querySelector('#type');
+  var arriveTimeField = adForm.querySelector('#timein');
+  var departureTimeField = adForm.querySelector('#timeout');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
   var changeFormElements = function (formElements, state, pointer) {
     formElements.forEach(function (element) {
       element.disabled = state;
@@ -37,9 +37,8 @@
     if (state === true) {
       pointer = 'pointer-events: none';
     }
-    changeFormElements(formFields, state, pointer);
-    changeFormElements(formSelects, state, pointer);
     changeFormElements(adFormFieldsets, state, pointer);
+    changeFormElements(mapFormFieldsets, state, pointer);
   };
 
   setDeactivatedForm(true);
@@ -89,12 +88,14 @@
 
   document.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.back.sendForm(new FormData(form));
+    window.back.sendForm(new FormData(adForm));
   });
-
+  adFormReset.addEventListener('click', function (evt) {
+    evt.preventDefault();
+  });
   window.form = {
-    form: form,
+    adForm: adForm,
+    mapForm: mapForm,
     setDeactivatedForm: setDeactivatedForm,
-    AppartmentType: AppartmentType,
   };
 })();

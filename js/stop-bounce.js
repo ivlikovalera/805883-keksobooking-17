@@ -1,8 +1,9 @@
 'use strict';
 
 (function () {
+  var DELAY = 500;
   var stopBounce = function (param) {
-    setTimeout(param, 500);
+    setTimeout(param, DELAY);
   };
 
   window.stopBounce = stopBounce;
