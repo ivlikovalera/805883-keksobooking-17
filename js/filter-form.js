@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var any = 'any';
-  var Features = {
+  var ANY_FILTER = 'any';
+  var Feature = {
     wifi: 'wifi',
     dishwasher: 'dishwasher',
     parking: 'parking',
@@ -10,7 +10,16 @@
     elevator: 'elevator',
     conditioner: 'conditioner',
   };
-  var adFilter = window.mapContainer.map.querySelector('.map__filters');
+  var PriceName = {
+    low: 'low',
+    middle: 'middle',
+    high: 'high',
+  };
+  var PriceValue = {
+    firstLimit: 10000,
+    secondLimit: 50000,
+  };
+  var adFilter = window.form.mapForm;
   var adFilterTypeSelect = adFilter.querySelector('#housing-type');
   var adFilterPriceSelect = adFilter.querySelector('#housing-price');
   var adFilterRoomsSelect = adFilter.querySelector('#housing-rooms');
@@ -44,42 +53,80 @@
   adFilterElevatorCheckbox.addEventListener('click', changeRenderPins);
   adFilterConditionerCheckbox.addEventListener('click', changeRenderPins);
 
+  var filterFeatures = function (pinObject, adFilterCheckbox, featureName) {
+    if (adFilterCheckbox.checked && !pinObject.offer.features.includes(featureName)) {
+      return true;
+    }
+    return false;
+  };
+
+  var filterSelects = function (offerData, selectedFilterValue, selectedFilter) {
+    if (offerData !== selectedFilterValue && selectedFilter !== ANY_FILTER) {
+      return true;
+    }
+    return false;
+  };
+
+  var filterByPrice = function (offerData, selectedFilter) {
+    switch (selectedFilter) {
+      case ANY_FILTER:
+        return false;
+      case PriceName.low:
+        if (offerData <= PriceValue.firstLimit) {
+          return false;
+        }
+        break;
+      case PriceName.middle:
+          console.log(2);
+        if (offerData >= PriceValue.firstLimit && offerData <= PriceValue.secondLimit) {
+          return false;
+        }
+        break;
+      case PriceName.high:
+        if (offerData >= PriceValue.secondLimit) {
+          return false;
+        }
+        break;
+    }
+    return true;
+  };
+
   var filterPins = function () {
     return resultFilterPins.filter(function (pinObject) {
-      if (pinObject.offer.type !== adFilterTypeSelect.value && adFilterTypeSelect.value !== any) {
+      if (filterSelects(pinObject.offer.type, adFilterTypeSelect.value, adFilterTypeSelect.value)) {
         return false;
       }
-      if (pinObject.offer.price !== adFilterPriceSelect.value && adFilterPriceSelect.value !== any) {
+      if (filterByPrice(pinObject.offer.price, adFilterPriceSelect.value)) {
         return false;
       }
-      if (pinObject.offer.rooms !== parseInt(adFilterRoomsSelect.value, 10) && adFilterRoomsSelect.value !== any) {
+      if (filterSelects(pinObject.offer.rooms, parseInt(adFilterRoomsSelect.value, 10), adFilterRoomsSelect.value)) {
         return false;
       }
-      if (pinObject.offer.guests !== parseInt(adFilterGuestsSelect.value, 10) && adFilterGuestsSelect.value !== any) {
+      if (filterSelects(pinObject.offer.guests, parseInt(adFilterGuestsSelect.value, 10), adFilterGuestsSelect.value)) {
         return false;
       }
-      if (adFilterWifiCheckbox.checked && !pinObject.offer.features.includes(Features.wifi)) {
+      if (filterFeatures(pinObject, adFilterWifiCheckbox, Feature.wifi)) {
         return false;
       }
-      if (adFilterDishwasherCheckbox.checked && !pinObject.offer.features.includes(Features.dishwasher)) {
+      if (filterFeatures(pinObject, adFilterDishwasherCheckbox, Feature.dishwasher)) {
         return false;
       }
-      if (adFilterParkingCheckbox.checked && !pinObject.offer.features.includes(Features.parking)) {
+      if (filterFeatures(pinObject, adFilterParkingCheckbox, Feature.parking)) {
         return false;
       }
-      if (adFilterWasherCheckbox.checked && !pinObject.offer.features.includes(Features.washer)) {
+      if (filterFeatures(pinObject, adFilterWasherCheckbox, Feature.washer)) {
         return false;
       }
-      if (adFilterElevatorCheckbox.checked && !pinObject.offer.features.includes(Features.elevator)) {
+      if (filterFeatures(pinObject, adFilterElevatorCheckbox, Feature.elevator)) {
         return false;
       }
-      if (adFilterConditionerCheckbox.checked && !pinObject.offer.features.includes(Features.conditioner)) {
+      if (filterFeatures(pinObject, adFilterConditionerCheckbox, Feature.conditioner)) {
         return false;
       }
       return true;
     });
   };
   window.filterForm = {
-    Features: Features,
+    Feature: Feature,
   };
 })();

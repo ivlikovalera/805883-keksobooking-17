@@ -31,7 +31,7 @@
     cardElement.querySelector('img').src = card.author.avatar;
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
     var cardFeatures = cardElement.querySelector('.popup__features');
-    for (var feature in window.filterForm.Features) {
+    for (var feature in window.filterForm.Feature) {
       if (!card.offer.features.includes(feature)) {
         cardFeatures.removeChild(cardFeatures.querySelector(featuresToFeatures[feature]));
       }

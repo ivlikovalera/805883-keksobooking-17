@@ -17,13 +17,13 @@
 
   var mainPin = document.querySelector('.map__pin--main');
   var map = document.querySelector('.map');
-  var addressField = window.form.form.querySelector('#address');
+  var addressField = window.form.adForm.querySelector('#address');
   addressField.readOnly = true;
   addressField.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
 
   var onPinClick = function () {
     map.classList.remove('map--faded');
-    window.form.form.classList.remove('ad-form--disabled');
+    window.form.adForm.classList.remove('ad-form--disabled');
     window.form.setDeactivatedForm(false);
     window.back.loadAds(window.renderPins.setRenderAllPins);
   };
