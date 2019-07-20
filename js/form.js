@@ -90,7 +90,7 @@
     evt.preventDefault();
     window.back.sendForm(new FormData(adForm));
   });
-  adFormReset.addEventListener('click', function(evt) {
+  adFormReset.addEventListener('click', function (evt) {
     evt.preventDefault();
   });
   window.form = {

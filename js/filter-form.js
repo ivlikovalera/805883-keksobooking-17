@@ -77,7 +77,6 @@
         }
         break;
       case PriceName.middle:
-          console.log(2);
         if (offerData >= PriceValue.firstLimit && offerData <= PriceValue.secondLimit) {
           return false;
         }
