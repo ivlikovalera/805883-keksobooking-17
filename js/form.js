@@ -19,7 +19,8 @@
   var adForm = document.querySelector('.ad-form');
   var mapForm = document.querySelector('.map__filters');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
-  var mapFormFieldsets = mapForm.querySelectorAll('fieldset');
+  var mapFormSelects = mapForm.querySelectorAll('select');
+  var mapFormCheckboxes = mapForm.querySelectorAll('label');
   var headlineField = adForm.querySelector('#title');
   var perNightField = adForm.querySelector('#price');
   var choiceOfHousingType = adForm.querySelector('#type');
@@ -38,7 +39,8 @@
       pointer = 'pointer-events: none';
     }
     changeFormElements(adFormFieldsets, state, pointer);
-    changeFormElements(mapFormFieldsets, state, pointer);
+    changeFormElements(mapFormSelects, state, pointer);
+    changeFormElements(mapFormCheckboxes, state, pointer);
   };
 
   setDeactivatedForm(true);
@@ -90,9 +92,21 @@
     evt.preventDefault();
     window.back.sendForm(new FormData(adForm));
   });
-  adFormReset.addEventListener('click', function (evt) {
+
+  var deactivatedApplication = function (evt) {
     evt.preventDefault();
-  });
+    adForm.reset();
+    window.mapContainer.map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+    setDeactivatedForm(true);
+    window.filterForm.removePins();
+    window.renderCards.removeCard();
+    window.mapContainer.mainPin.style.left = window.mapContainer.initiallyCoordinate.x + 'px';
+    window.mapContainer.mainPin.style.top = window.mapContainer.initiallyCoordinate.y + 'px';
+    window.mapContainer.addressField.value = window.mapContainer.mainPin.offsetLeft + ', ' + window.mapContainer.mainPin.offsetTop;
+  };
+
+  adFormReset.addEventListener('click', deactivatedApplication);
   window.form = {
     adForm: adForm,
     mapForm: mapForm,
