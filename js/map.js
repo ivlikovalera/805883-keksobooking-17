@@ -3,7 +3,7 @@
 (function () {
   var PIN = {
     WIDTH: 62,
-    HEIGHT: 84
+    HEIGHT: 84,
   };
 
   var APPLICATION_WIDTH = {
@@ -16,6 +16,7 @@
   };
 
   var mainPin = document.querySelector('.map__pin--main');
+  var initiallyCoordinate = new window.movePin.Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
   var map = document.querySelector('.map');
   var addressField = window.form.adForm.querySelector('#address');
   addressField.readOnly = true;
@@ -38,6 +39,7 @@
     map: map,
     mainPin: mainPin,
     onPinClick: onPinClick,
-    addressField: addressField
+    addressField: addressField,
+    initiallyCoordinate: initiallyCoordinate,
   };
 })();

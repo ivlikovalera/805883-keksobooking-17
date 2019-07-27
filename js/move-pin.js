@@ -1,6 +1,11 @@
 'use strict';
 
 (function () {
+  var Coordinate = function (x, y) {
+    this.x = x;
+    this.y = y;
+  };
+
   var draggedPin = function (evt) {
 
     evt.preventDefault();
@@ -8,10 +13,6 @@
       window.mapContainer.onPinClick();
       window.mapContainer.mainPin.removeEventListener('click', window.mapContainer.onPinClick);
     }
-    var Coordinate = function (x, y) {
-      this.x = x;
-      this.y = y;
-    };
     var startCoords = new Coordinate(evt.clientX, evt.clientY);
 
     var onMouseMove = function (moveEvt) {
@@ -44,6 +45,7 @@
     document.addEventListener('mouseup', onMouseUp);
   };
   window.movePin = {
-    draggedPin: draggedPin
+    draggedPin: draggedPin,
+    Coordinate: Coordinate,
   };
 })();

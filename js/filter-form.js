@@ -31,14 +31,19 @@
   var adFilterElevatorCheckbox = adFilter.querySelector('#filter-elevator');
   var adFilterConditionerCheckbox = adFilter.querySelector('#filter-conditioner');
   var resultFilterPins;
-  var changeRenderPins = function () {
+
+  var removePins = function () {
     var currentPins = window.renderPins.similarListAds.querySelectorAll('.map__pin');
-    resultFilterPins = window.renderPins.getAllPins();
     currentPins.forEach(function (element) {
       if (!element.classList.contains('map__pin--main')) {
         window.renderPins.similarListAds.removeChild(element);
       }
     });
+  };
+
+  var changeRenderPins = function () {
+    resultFilterPins = window.renderPins.getAllPins();
+    removePins();
     window.stopBounce(window.renderPins.renderPinsToMap(filterPins()));
   };
 
@@ -127,5 +132,6 @@
   };
   window.filterForm = {
     Feature: Feature,
+    removePins: removePins,
   };
 })();

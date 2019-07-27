@@ -64,7 +64,9 @@
   };
 
   var removeCard = function () {
-    currentCard.remove();
+    if (currentCard) {
+      currentCard.remove();
+    }
   };
 
   var makeFiledPopup = function (card) {
@@ -74,15 +76,9 @@
   };
 
   var renderCardToMap = function (card) {
-    if (currentCard) {
-      removeCard();
-    }
+    removeCard();
     var fragment = makeFiledPopup(card);
     window.renderPins.similarListAds.appendChild(fragment);
-  };
-
-  var onAdClick = function () {
-    window.back.loadAds(window.renderCards.renderCardToMap);
   };
 
   var setListenerToPin = function (currentPins) {
@@ -102,6 +98,6 @@
   window.renderCards = {
     renderCardToMap: renderCardToMap,
     setListenerToPin: setListenerToPin,
-    onAdClick: onAdClick,
+    removeCard: removeCard,
   };
 })();
