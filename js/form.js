@@ -4,6 +4,7 @@
   var TITLE_MIN_LENGTH = 30;
   var TITLE_MAX_LENGTH = 100;
   var MAX_PRICE_PER_NIGHT = 1000000;
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var AppartmentType = {
     BUNGALO: 'bungalo',
     FLAT: 'flat',
@@ -50,6 +51,11 @@
   var capacitySelect = adForm.querySelector('#capacity');
   var arriveTimeField = adForm.querySelector('#timein');
   var departureTimeField = adForm.querySelector('#timeout');
+  var fileChooserMainPhoto = adForm.querySelector('.ad-form__field input[type=file]');
+  var fileChooserAllPhoto = adForm.querySelector('.ad-form__upload input[type=file]');
+  var previewPicMainPhoto = adForm.querySelector('.ad-form-header__preview').querySelector('img');
+  var previewPicAllPhotoBox = adForm.querySelector('.ad-form__photo');
+  var previewPicAllPhotoContainer = adForm.querySelector('.ad-form__photo-container');
   var adFormReset = adForm.querySelector('.ad-form__reset');
   var changeFormElements = function (formElements, state, pointer) {
     formElements.forEach(function (element) {
@@ -68,6 +74,7 @@
   };
 
   setDeactivatedForm(true);
+  fileChooserAllPhoto.multiple = true;
   headlineField.minLength = TITLE_MIN_LENGTH;
   headlineField.maxLength = TITLE_MAX_LENGTH;
   headlineField.required = true;
@@ -121,10 +128,62 @@
         break;
     }
   };
+
+  var loadMainPhoto = function () {
+    var file = fileChooserMainPhoto.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        previewPicMainPhoto.src = reader.result;
+      });
+      reader.readAsDataURL(file);
+    }
+  };
+
+  var loadAllPhotos = function () {
+
+    var files = fileChooserAllPhoto.files;
+    for (var i = 0; i < files.length; i++) {
+      var fileName = files[i].name.toLowerCase();
+
+      var matches = FILE_TYPES.some(function (it) {
+        return fileName.endsWith(it);
+      });
+
+      if (matches) {
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function (evt) {
+          if (previewPicAllPhotoBox.querySelector('img')) {
+            previewPicAllPhotoBox = document.createElement('div');
+            previewPicAllPhotoBox.classList.add('ad-form__photo');
+            previewPicAllPhotoBox = previewPicAllPhotoContainer.appendChild(previewPicAllPhotoBox);
+          }
+          var img = document.createElement('img');
+          img.src = evt.target.result;
+          var previewPicAllPhoto = previewPicAllPhotoBox.appendChild(img);
+          previewPicAllPhoto.width = '70';
+          previewPicAllPhoto.height = '70';
+        });
+        reader.readAsDataURL(files[i]);
+      }
+    }
+  };
+
   choiceOfHousingType.addEventListener('change', changeMinPrice);
   changeMinPrice();
 
   roomNumberSelect.addEventListener('change', validateCapacity);
+
+  fileChooserMainPhoto.addEventListener('change', loadMainPhoto);
+
+  fileChooserAllPhoto.addEventListener('change', loadAllPhotos);
 
   capacitySelect.addEventListener('change', validateCapacity);
 
