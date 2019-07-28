@@ -30,16 +30,16 @@
           onSuccess(evt.target.response);
           break;
         case Code.BAD_REQUEST:
-          window.showErrorModal(DescriptionText.BAD_REQUEST);
+          window.modal.showErrorModal(DescriptionText.BAD_REQUEST);
           break;
         case Code.NOT_FOUND_ERROR:
-          window.showErrorModal(DescriptionText.NOT_FOUND_ERROR);
+          window.modal.showErrorModal(DescriptionText.NOT_FOUND_ERROR);
           break;
         case Code.BAD_GATEWAY:
-          window.showErrorModal(DescriptionText.BAD_GATEWAY);
+          window.modal.showErrorModal(DescriptionText.BAD_GATEWAY);
           break;
         default:
-          window.showErrorModal((DescriptionText.ANOTHER_ERROR + evt.target.status));
+          window.modal.showErrorModal((DescriptionText.ANOTHER_ERROR + evt.target.status));
       }
     });
     xhr.addEventListener('error', window.modal.showErrorModal);

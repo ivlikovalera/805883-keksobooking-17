@@ -229,8 +229,10 @@
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.modal.showSuccessModal();
-    window.back.sendForm(new FormData(adForm), deactivatedApplication);
+    window.back.sendForm(new FormData(adForm), function () {
+      window.modal.showSuccessModal();
+      deactivatedApplication();
+    });
   });
 
   adFormReset.addEventListener('click', function (evt) {
