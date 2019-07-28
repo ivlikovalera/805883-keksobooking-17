@@ -42,6 +42,7 @@
   };
 
   var changeRenderPins = function () {
+    window.renderCards.removeCard();
     resultFilterPins = window.renderPins.getAllPins();
     removePins();
     window.stopBounce(window.renderPins.renderPinsToMap(filterPins()));

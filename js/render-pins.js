@@ -5,6 +5,7 @@
   var allPins = [];
   var similarListAds = document.querySelector('.map__pins');
   var similarAdTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
   var renderAd = function (ad) {
     var pinElement = similarAdTemplate.cloneNode(true);
     pinElement.style = 'left: ' + ad.location.x + 'px; ' + 'top: ' + ad.location.y + 'px;';
@@ -33,6 +34,8 @@
   var setRenderAllPins = function (response) {
     allPins = response;
     renderPinsToMap(allPins);
+    window.form.setDeactivatedForm(false, window.form.mapFormSelects);
+    window.form.setDeactivatedForm(false, window.form.mapFormCheckboxes);
   };
 
   window.renderPins = {

@@ -38,12 +38,14 @@
     palace: 10000
   };
 
-  var endMessage = ' Измените количество комнат или количество гостей';
   var adForm = document.querySelector('.ad-form');
+  var previewPicMainPhoto = adForm.querySelector('.ad-form-header__preview').querySelector('img');
+  var DEFAULT_MAIN_PHOTO = previewPicMainPhoto.src; // Константа находится здесь, так как её нахождение выше было бы невозможным.
   var mapForm = document.querySelector('.map__filters');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
   var mapFormSelects = mapForm.querySelectorAll('select');
   var mapFormCheckboxes = mapForm.querySelectorAll('label');
+  var endMessage = ' Измените количество комнат или количество гостей';
   var headlineField = adForm.querySelector('#title');
   var perNightField = adForm.querySelector('#price');
   var choiceOfHousingType = adForm.querySelector('#type');
@@ -53,27 +55,28 @@
   var departureTimeField = adForm.querySelector('#timeout');
   var fileChooserMainPhoto = adForm.querySelector('.ad-form__field input[type=file]');
   var fileChooserAllPhoto = adForm.querySelector('.ad-form__upload input[type=file]');
-  var previewPicMainPhoto = adForm.querySelector('.ad-form-header__preview').querySelector('img');
   var previewPicAllPhotoBox = adForm.querySelector('.ad-form__photo');
   var previewPicAllPhotoContainer = adForm.querySelector('.ad-form__photo-container');
   var adFormReset = adForm.querySelector('.ad-form__reset');
+
   var changeFormElements = function (formElements, state, pointer) {
     formElements.forEach(function (element) {
       element.disabled = state;
       element.style = pointer;
     });
   };
-  var setDeactivatedForm = function (state) {
+  var setDeactivatedForm = function (state, objects) {
     var pointer = false;
     if (state === true) {
       pointer = 'pointer-events: none';
     }
-    changeFormElements(adFormFieldsets, state, pointer);
-    changeFormElements(mapFormSelects, state, pointer);
-    changeFormElements(mapFormCheckboxes, state, pointer);
+    changeFormElements(objects, state, pointer);
   };
 
-  setDeactivatedForm(true);
+  setDeactivatedForm(true, adFormFieldsets);
+  setDeactivatedForm(true, mapFormSelects);
+  setDeactivatedForm(true, mapFormCheckboxes);
+
   fileChooserAllPhoto.multiple = true;
   headlineField.minLength = TITLE_MIN_LENGTH;
   headlineField.maxLength = TITLE_MAX_LENGTH;
@@ -199,17 +202,25 @@
     changeTimeFieldValue(departureTimeField, arriveTimeField);
   });
 
-  document.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    window.back.sendForm(new FormData(adForm), function () {});
-  });
-
-  var deactivatedApplication = function (evt) {
-    evt.preventDefault();
+  var deletePhotos = function () {
+    var allPhotoBoxes = previewPicAllPhotoContainer.querySelectorAll('.ad-form__photo');
+    if (allPhotoBoxes.length > 1) {
+      for (var i = 0; i < allPhotoBoxes.length - 1; i++) {
+        allPhotoBoxes[i].remove();
+      }
+    }
+    if (allPhotoBoxes[allPhotoBoxes.length - 1].querySelector('img')) {
+      allPhotoBoxes[allPhotoBoxes.length - 1].querySelector('img').remove();
+    }
+  };
+  var deactivatedApplication = function () {
     adForm.reset();
+    mapForm.reset();
     window.mapContainer.map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
-    setDeactivatedForm(true);
+    setDeactivatedForm(true, adFormFieldsets);
+    setDeactivatedForm(true, mapFormSelects);
+    setDeactivatedForm(true, mapFormCheckboxes);
     window.filterForm.removePins();
     window.renderCards.removeCard();
     capacitySelect.value = GuestCount.oneGuest;
@@ -217,12 +228,29 @@
     window.mapContainer.mainPin.style.top = window.mapContainer.initiallyCoordinate.y + 'px';
     window.mapContainer.addressField.value = window.mapContainer.mainPin.
     offsetLeft + ', ' + window.mapContainer.mainPin.offsetTop;
+    previewPicMainPhoto.src = DEFAULT_MAIN_PHOTO;
+    deletePhotos();
   };
 
-  adFormReset.addEventListener('click', deactivatedApplication);
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.back.sendForm(new FormData(adForm), function () {
+      window.modal.showModal(window.utils.SUCCESS);
+      deactivatedApplication();
+    });
+  });
+
+  adFormReset.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    deactivatedApplication();
+  });
+
   window.form = {
     adForm: adForm,
     mapForm: mapForm,
     setDeactivatedForm: setDeactivatedForm,
+    adFormFieldsets: adFormFieldsets,
+    mapFormSelects: mapFormSelects,
+    mapFormCheckboxes: mapFormCheckboxes,
   };
 })();

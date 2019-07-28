@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var similarCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var typeToType = {
     'bungalo': 'Бунгало',
     'flat': 'Квартира',
@@ -16,6 +15,7 @@
     'elevator': '.popup__feature--elevator',
     'conditioner': '.popup__feature--conditioner',
   };
+  var similarCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var currentCard;
   var renderCard = function (card) {
     var cardElement = similarCardTemplate.cloneNode(true);
@@ -67,6 +67,10 @@
     if (currentCard) {
       currentCard.remove();
     }
+    var currentPin = window.renderPins.similarListAds.querySelector('.map__pin--active');
+    if (currentPin) {
+      currentPin.classList.remove('map__pin--active');
+    }
   };
 
   var makeFiledPopup = function (card) {
@@ -82,15 +86,13 @@
   };
 
   var setListenerToPin = function (currentPins) {
-    var pinOnMap = document.querySelectorAll('.map__pin');
-    pinOnMap = Array.from(pinOnMap);
+    var pinOnMap = window.utils.transformNodeToArray(document.querySelectorAll('.map__pin'));
     pinOnMap.shift();
     pinOnMap.forEach(function (it, i) {
-      if (it !== window.mapContainer.mainPin) {
-        it.addEventListener('click', function () {
-          renderCardToMap(currentPins[i]);
-        });
-      }
+      it.addEventListener('click', function () {
+        renderCardToMap(currentPins[i]);
+        it.classList.add('map__pin--active');
+      });
     });
   };
 
