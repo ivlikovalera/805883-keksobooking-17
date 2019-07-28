@@ -98,7 +98,6 @@
 
 
   window.renderCards = {
-    renderCardToMap: renderCardToMap,
     setListenerToPin: setListenerToPin,
     removeCard: removeCard,
   };

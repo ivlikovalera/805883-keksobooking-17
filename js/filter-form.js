@@ -60,17 +60,11 @@
   adFilterConditionerCheckbox.addEventListener('click', changeRenderPins);
 
   var filterFeatures = function (pinObject, adFilterCheckbox, featureName) {
-    if (adFilterCheckbox.checked && !pinObject.offer.features.includes(featureName)) {
-      return true;
-    }
-    return false;
+    return adFilterCheckbox.checked && !pinObject.offer.features.includes(featureName);
   };
 
   var filterSelects = function (offerData, selectedFilterValue, selectedFilter) {
-    if (offerData !== selectedFilterValue && selectedFilter !== ANY_FILTER) {
-      return true;
-    }
-    return false;
+    return offerData !== selectedFilterValue && selectedFilter !== ANY_FILTER;
   };
 
   var filterByPrice = function (offerData, selectedFilter) {
@@ -125,10 +119,7 @@
       if (filterFeatures(pinObject, adFilterElevatorCheckbox, Feature.elevator)) {
         return false;
       }
-      if (filterFeatures(pinObject, adFilterConditionerCheckbox, Feature.conditioner)) {
-        return false;
-      }
-      return true;
+      return !filterFeatures(pinObject, adFilterConditionerCheckbox, Feature.conditioner);
     });
   };
   window.filterForm = {
