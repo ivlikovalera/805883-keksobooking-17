@@ -5,39 +5,30 @@
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var applicationLayout = document.querySelector('main');
   var errorMessage = errorTemplate.querySelector('.error__message');
-  var errorButton = errorTemplate.querySelector('.error__button');
-  var errorModal = errorTemplate;
-  var successModal = successTemplate;
+  var currentModal;
 
-  var showErrorModal = function (errorText) {
-    errorMessage.textContent = errorText;
-    applicationLayout.appendChild(errorTemplate);
-    errorButton.addEventListener('click', function () {
-      applicationLayout.removeChild(errorModal);
-    });
-    document.addEventListener('click', function () {
-      applicationLayout.removeChild(errorModal);
-    });
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC) {
-        applicationLayout.removeChild(errorModal);
-      }
-    });
+  var showModal = function (status) {
+    if (status === window.utils.SUCCESS) {
+      currentModal = successTemplate;
+    } else {
+      currentModal = errorTemplate;
+      errorMessage.textContent = status;
+    }
+
+    applicationLayout.appendChild(currentModal);
+    currentModal.addEventListener('click', closeModal);
+    document.addEventListener('keydown', closeModal);
   };
 
-  var showSuccessModal = function () {
-    applicationLayout.appendChild(successTemplate);
-    document.addEventListener('click', function () {
-      applicationLayout.removeChild(successModal);
-    });
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC) {
-        applicationLayout.removeChild(successModal);
-      }
-    });
+  var closeModal = function (evt) {
+    if (evt.type === 'click' || (evt.type === 'keydown' && evt.keyCode === window.utils.ESC)) {
+      applicationLayout.removeChild(currentModal);
+      currentModal.removeEventListener('click', closeModal);
+      document.removeEventListener('keydown', closeModal);
+    }
   };
+
   window.modal = {
-    showErrorModal: showErrorModal,
-    showSuccessModal: showSuccessModal,
+    showModal: showModal,
   };
 })();

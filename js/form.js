@@ -58,23 +58,25 @@
   var previewPicAllPhotoBox = adForm.querySelector('.ad-form__photo');
   var previewPicAllPhotoContainer = adForm.querySelector('.ad-form__photo-container');
   var adFormReset = adForm.querySelector('.ad-form__reset');
+
   var changeFormElements = function (formElements, state, pointer) {
     formElements.forEach(function (element) {
       element.disabled = state;
       element.style = pointer;
     });
   };
-  var setDeactivatedForm = function (state) {
+  var setDeactivatedForm = function (state, objects) {
     var pointer = false;
     if (state === true) {
       pointer = 'pointer-events: none';
     }
-    changeFormElements(adFormFieldsets, state, pointer);
-    changeFormElements(mapFormSelects, state, pointer);
-    changeFormElements(mapFormCheckboxes, state, pointer);
+    changeFormElements(objects, state, pointer);
   };
 
-  setDeactivatedForm(true);
+  setDeactivatedForm(true, adFormFieldsets);
+  setDeactivatedForm(true, mapFormSelects);
+  setDeactivatedForm(true, mapFormCheckboxes);
+
   fileChooserAllPhoto.multiple = true;
   headlineField.minLength = TITLE_MIN_LENGTH;
   headlineField.maxLength = TITLE_MAX_LENGTH;
@@ -213,9 +215,12 @@
   };
   var deactivatedApplication = function () {
     adForm.reset();
+    mapForm.reset();
     window.mapContainer.map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
-    setDeactivatedForm(true);
+    setDeactivatedForm(true, adFormFieldsets);
+    setDeactivatedForm(true, mapFormSelects);
+    setDeactivatedForm(true, mapFormCheckboxes);
     window.filterForm.removePins();
     window.renderCards.removeCard();
     capacitySelect.value = GuestCount.oneGuest;
@@ -230,7 +235,7 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.back.sendForm(new FormData(adForm), function () {
-      window.modal.showSuccessModal();
+      window.modal.showModal(window.utils.SUCCESS);
       deactivatedApplication();
     });
   });
@@ -244,5 +249,8 @@
     adForm: adForm,
     mapForm: mapForm,
     setDeactivatedForm: setDeactivatedForm,
+    adFormFieldsets: adFormFieldsets,
+    mapFormSelects: mapFormSelects,
+    mapFormCheckboxes: mapFormCheckboxes,
   };
 })();

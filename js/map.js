@@ -25,7 +25,7 @@
   var onPinClick = function () {
     map.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
-    window.form.setDeactivatedForm(false);
+    window.form.setDeactivatedForm(false, window.form.adFormFieldsets);
     window.back.loadAds(window.renderPins.setRenderAllPins);
   };
 

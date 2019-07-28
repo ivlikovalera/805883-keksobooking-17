@@ -15,6 +15,7 @@
     BAD_REQUEST: 'Некорректный запрос',
     NOT_FOUND_ERROR: 'Ничего не найдено',
     BAD_GATEWAY: 'Проблемы на стороне сервера',
+    NO_CONNECTION: 'Отсутствует соединение с сетью',
     ANOTHER_ERROR: 'Сервер ответил кодом '
   };
   var HTTPMethod = {
@@ -30,19 +31,21 @@
           onSuccess(evt.target.response);
           break;
         case Code.BAD_REQUEST:
-          window.modal.showErrorModal(DescriptionText.BAD_REQUEST);
+          window.modal.showModal(DescriptionText.BAD_REQUEST);
           break;
         case Code.NOT_FOUND_ERROR:
-          window.modal.showErrorModal(DescriptionText.NOT_FOUND_ERROR);
+          window.modal.showModal(DescriptionText.NOT_FOUND_ERROR);
           break;
         case Code.BAD_GATEWAY:
-          window.modal.showErrorModal(DescriptionText.BAD_GATEWAY);
+          window.modal.showModal(DescriptionText.BAD_GATEWAY);
           break;
         default:
-          window.modal.showErrorModal((DescriptionText.ANOTHER_ERROR + evt.target.status));
+          window.modal.showModal((DescriptionText.ANOTHER_ERROR + evt.target.status));
       }
     });
-    xhr.addEventListener('error', window.modal.showErrorModal);
+    xhr.addEventListener('error', function () {
+      window.modal.showModal(DescriptionText.NO_CONNECTION);
+    });
     return xhr;
   };
 
