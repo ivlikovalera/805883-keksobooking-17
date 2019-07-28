@@ -42,7 +42,7 @@
           window.showErrorModal((DescriptionText.ANOTHER_ERROR + evt.target.status));
       }
     });
-    xhr.addEventListener('error', window.showErrorModal);
+    xhr.addEventListener('error', window.modal.showErrorModal);
     return xhr;
   };
 
